@@ -1,6 +1,7 @@
 import logging
 from datetime import datetime
 import os
+from from_root import from_root
 
 
 LOG_PATH = f"{datetime.now().strftime("%m-%d-%y-%H-%M-%S")}.log"
