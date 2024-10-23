@@ -4,7 +4,7 @@ import os
 from from_root import from_root
 
 
-LOG_PATH = f"{datetime.now().strftime("%m-%d-%y-%H-%M-%S")}.log"
+LOG_PATH = f"{datetime.now().strftime('%m-%d-%y-%H-%M-%S')}.log"
 
 FILE_LOG = os.path.join(os.getcwd(),"logs")
 
