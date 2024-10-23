@@ -34,7 +34,7 @@ class DataIngestion:
 
             logging.info("Exited the unzip_and_clean method of Data ingestion class")
 
-            return self.data_ingestion_config.DATA_ARTIFACTS_DIR, self.data_ingestion_config.NEW_DATA_ARTIFACTS_DIR
+            return self.data_ingestion_config.DATA_ARTIFACTS_DIR, self.data_ingestion_config.DATA_NEW_ARTIFACTS_DIR
 
         except Exception as e:
             raise custom_exception(e, sys)
@@ -43,8 +43,8 @@ class DataIngestion:
         logging.info("Entered the initiate_data_ingestion")
 
         try:
-            # self.get_data_from_gcloud()
-            # logging.info("Fetch data from gcloud bucket")
+            self.get_data_from_gcloud()
+            logging.info("Fetch data from gcloud bucket")
             imbalance_data_file_path , raw_data_file_path = self.unzip_and_clean()
             logging.info("Unzipped the data and split into train and validation class")
             data_ingestion_artifacts = DataIngestionArtifacts(imbalance_data_file_path,raw_data_file_path)

@@ -1,7 +1,7 @@
 import os
 from datetime import datetime
 
-TIMESTAMP: str = datetime.now().strftime("%m_%d_%Y_%H_%M_%S")
+TIMESTAMP: str = datetime.now().strftime("%m_%d_%Y")
 ARTIFACT_DIR = os.path.join("artifacts",TIMESTAMP)
 BUCKET_NAME=""
 ZIP_FILE_NAME="dataset.zip"
