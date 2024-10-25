@@ -7,7 +7,7 @@ from src.exception.exception import custom_exception
 from src.constants import *
 from sklearn.model_selection import train_test_split
 from keras._tf_keras.keras.preprocessing.text import Tokenizer
-from keras._tf_keras.keras.utils import pad_sequences
+from keras._tf_keras.keras.preprocessing.sequence import pad_sequences
 from src.entity.artifact_entity import ModelTrainerArtifacts,DataTranformationArtifacts
 from src.entity.config_entity import ModelTrainerConfig
 from src.model.base_model import ModelArchitecture
@@ -53,3 +53,50 @@ class ModelTrainer:
         
         except Exception as e:
             raise custom_exception(e,sys)
+
+
+    def initiate_model_trainer(self)  -> ModelTrainerArtifacts:
+        try:
+            logging.info("Entered the initiate model trainer function")
+            x_train,  x_test, y_train, y_test = self.spliting_data(self.data_transformation_artifacts.transformed_data_path)
+            model_architecture = ModelArchitecture()
+
+            model = model_architecture.create_model()
+            logging.info("Compiling the model")
+
+            sequences_matrix, tokenizer = self.tokenizing(x_train)
+
+            logging.info("Entered into the model training")
+
+            model.fit(sequences_matrix,y_train,
+                      batch_size=self.model_trainer_config.BATCH_SIZE,
+                      epochs=self.model_trainer_config.EPOCH,
+                      validation_split=self.model_trainer_config.VALIDATION_SPLIT)
+            
+            logging.info("Model training finished")
+            with open("tokenizer.pickle", "wb") as handle:
+                pickle.dump(tokenizer,  handle, protocol=pickle.HIGHEST_PROTOCOL)
+                logging.info("Model artifacts saved")
+            os.makedirs(self.model_trainer_config.TRAINED_MODEL_DIR,exist_ok=True)
+
+            logging.info("Saving the model")
+            model.save(self.model_trainer_config.TRAINED_MODEL_PATH)
+            logging.info("Model saved")
+            
+            x_test.to_csv(self.model_trainer_config.X_TEST_DATA_PATH)
+            y_test.to_csv(self.model_trainer_config.Y_TEST_DATA_PATH)
+            x_train.to_csv(self.model_trainer_config.X_TRAIN_DATA_PATH)
+
+            model_trainer_artifacts = ModelTrainerArtifacts(
+                model_path=self.model_trainer_config.TRAINED_MODEL_PATH,
+                x_test_path=self.model_trainer_config.X_TEST_DATA_PATH,
+                y_test_path=self.model_trainer_config.Y_TEST_DATA_PATH,
+            )
+
+            logging.info("Return the ModelTrainerArtifacts")
+            return model_trainer_artifacts
+        
+        except Exception as e:
+            raise  custom_exception(e,sys)
+        
+        
