@@ -51,7 +51,8 @@ class DataTranformation:
             raw_data[self.data_transformation_config.CLASS].replace({0:1},inplace=True)
             raw_data[self.data_transformation_config.CLASS].replace({2:0}, inplace=True)
 
-            raw_data.rename(columns={self.data_transformation_config.CLASS:self.data_transformation_config.LABEL})
+            raw_data.rename(columns={self.data_transformation_config.CLASS:self.data_transformation_config.LABEL},
+                            inplace=True)
             logging.info(f"Entered the raw data cleaning function and return raw data {raw_data}")
 
             return raw_data
@@ -62,7 +63,7 @@ class DataTranformation:
     def concat_the_frame(self):
         try:
             logging.info("Entered into the concat frame function")
-            frame = [self.raw_data_cleaning(), self.imbalance_data_cleaning()]
+            frame = [self.imbalance_data_cleaning(), self.raw_data_cleaning()]
 
             df = pd.concat(frame)
             print(df.head())

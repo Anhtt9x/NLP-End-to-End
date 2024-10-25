@@ -38,8 +38,8 @@ VALIDATION_SPLIT = 0.2
 
 
 # Model Architecture constants
-MAX_WORDS = 500
-MAX_LEN = 100
+MAX_WORDS = 50000
+MAX_LEN = 500
 LOSS = 'binary_crossentropy'
 METRICS = ['accuracy']
 ACTIVATION = 'sigmoid'

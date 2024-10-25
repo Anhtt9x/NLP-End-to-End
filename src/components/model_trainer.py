@@ -40,6 +40,7 @@ class ModelTrainer:
     def tokenizing(self, x_train):
         try:
             logging.info("Entered the tokenizing function")
+            x_train = [str(text) for text in x_train]
             tokenizer = Tokenizer(num_words=self.model_trainer_config.MAX_WORDS)
             tokenizer.fit_on_texts(x_train)
             sequences = tokenizer.texts_to_sequences(x_train)
@@ -88,7 +89,7 @@ class ModelTrainer:
             x_train.to_csv(self.model_trainer_config.X_TRAIN_DATA_PATH)
 
             model_trainer_artifacts = ModelTrainerArtifacts(
-                model_path=self.model_trainer_config.TRAINED_MODEL_PATH,
+                trained_model_path=self.model_trainer_config.TRAINED_MODEL_PATH,
                 x_test_path=self.model_trainer_config.X_TEST_DATA_PATH,
                 y_test_path=self.model_trainer_config.Y_TEST_DATA_PATH,
             )
