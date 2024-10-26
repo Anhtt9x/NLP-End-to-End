@@ -40,7 +40,11 @@ class PredictionPipeline:
     def predict(self,best_model_path,text):
         logging.info("Running the predict function")
         try:
-            best_model_path:str = self.get_model_from_gcloud()
+            if os.path.exists(self.model_path) is False:
+                best_model_path:str = self.get_model_from_gcloud()
+            
+            else:
+                best_model_path:str = os.path.join(self.model_path,self.model_name)
             load_model = keras.models.load_model(best_model_path)
             with open("tokenizer.pickle","rb") as handle:
                 tokenizer = pickle.load(handle)
